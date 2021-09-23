@@ -1,24 +1,7 @@
 # projet-innlog
+Utilisation d'une Base de données MySql. Paramètre de connection dans le fichier src/Backend/modele/connect.php (avec un extrait de la bdd dans le fichier Innlog.sql)
 
-## Project setup
-```
-npm install
-```
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).

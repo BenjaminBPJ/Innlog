@@ -28,7 +28,7 @@ export default {
         const data = new FormData();
         data.append('pseudo', this.Admin.pseudo)
         data.append('password', this.Admin.password)
-        axios.post('http://localhost/Innlog/projet-innlog/src/backend/modele/getOutings.php?action=signup', data)
+        axios.post('http://localhost/Innlog/projet-innlog/src/backend/api.php?action=signup', data)
             .then((res)=>{
                 console.log(res)
             })
