@@ -1,5 +1,5 @@
 # projet-innlog
-Utilisation d'une Base de données MySql. Paramètre de connection dans le fichier src/Backend/modele/connect.php (avec un extrait de la bdd dans le fichier Innlog.sql)
+Utilisation d'une Base de données MySql. Paramètres de connection dans le fichier src/backend/modele/connect.php (avec un extrait de la bdd dans le fichier Innlog.sql dans le dossier public)
 
 
 
