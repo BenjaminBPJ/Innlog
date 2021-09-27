@@ -2,12 +2,12 @@
 <div>
   <div>
     <h1>Bienvenu sur l'application qui répertorie les meilleures balades de la région</h1>
-    <div>
-      <h3>Nom de la sortie</h3>
-      <h2>"type de sortie"</h2>
-      <p>allure moyenne</p>
+    <div v-for="outing in outings" :key="outing">
+      <h3>{{ outing.title }}</h3>
+      <h2>{{ outing.type }}</h2>
+      <p>{{ outing.speedAverage }}</p>
       <p>durée</p>
-      <p>commentaire</p>
+      <p>{{ outing.comment }}</p>
       <button @click="showEditModal=true">Modifier la sortie</button>
     </div>
     <button @click="showAddModal=true">Ajouter une nouvelle sortie</button>
@@ -70,15 +70,37 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: 'HomePage',
   data () {
     return {
       showAddModal : false,
-      showEditModal : false
+      showEditModal : false,
+      outings : []
+    }
+  },
+  mounted() {
+    this.getAllOutings();
+  },
+  methods: {
+    getAllOutings() {
+      axios.get("http://localhost/Innlog/Innlog/projet-innlog/src/backend/api.php?action=read")
+        //.then((response) => { console.log(response.data.outings[0],)})
+        .then((response) => { 
+          this.outings = response.data.outings[0];
+          console.log(this.outings);
+          })
+    },
+    createOuting() {
+      axios.post("http://localhost/Innlog/Innlog/projet-innlog/src/backend/api.php?action=create")
+        .then(()=>{
+
+        })
     }
   }
-}
+};
 </script>
 
 

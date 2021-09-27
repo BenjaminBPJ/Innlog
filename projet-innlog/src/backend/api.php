@@ -34,6 +34,7 @@ function cors() {
         exit(0);
     }
 }
+cors();
 
     require_once('./connect.php');
 
@@ -49,7 +50,7 @@ function cors() {
     if ($action == 'read') {
         $sql = $bdd->query('SELECT * FROM sorties');
         $outings = array();
-        while($row = $sql->fetchAll()){
+        while($row = $sql->fetchAll(PDO::FETCH_ASSOC)){
             array_push($outings, $row);
         }
         $result['outings']=$outings;
