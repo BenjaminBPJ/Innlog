@@ -60,11 +60,11 @@ cors();
     if ($action == 'create') {
         $title=$_POST['title'];
         $type=$_POST['type'];
-        $distance=$_POST['distance'];
         $speedAverage=$_POST['speedAverage'];
+        $distance=$_POST['distance'];
         $comment=$_POST['comment'];
 
-        $sql=$bdd->query("INSERT into sorties (title, type, date, distance, speedAverage, comment ) VALUES ('$title', '$type', NOW(), '$distance', '$speedAverage', '$comment')");
+        $sql=$bdd->query("INSERT into sorties (title, type, date, speedAverage, distance, comment ) VALUES ('$title', '$type', NOW(), '$speedAverage', '$distance', '$comment')");
         if($sql){
             $result['message'] = 'La sortie a été crée.';
         } else {
