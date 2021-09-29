@@ -12,7 +12,7 @@
       <p>durée</p>
       <p>Commentaire : {{ outing.comment }}</p>
       <button @click="showEditModal=true; selectOuting(outing);">Modifier la sortie</button>
-      <button @click="selectOuting(outing);">Supprimer la sortie</button>
+      <button @click="showDeleteModal=true;selectOuting(outing);">Supprimer la sortie</button>
     </div>
     <button @click="showAddModal=true">Ajouter une nouvelle sortie</button>
   </div>
@@ -70,6 +70,20 @@
       </div>
     </div>
   </div> 
+
+  <!-- modale suppression sortie -->
+   <div id="overlay" v-if="showDeleteModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5>Êtes-vous sur de vouloir supprimer cette sortie ?</h5>
+          <p>Vous allez supprimer {{ currentOuting.title }}</p>
+          <button @click="showDeleteModal=false;deleteOuting()">Yes</button>
+          <button @click="showDeleteModal=false">No</button>
+        </div>
+      </div>
+    </div>
+  </div> 
 </div>
 </template>
 
@@ -82,6 +96,7 @@ export default {
     return {
       showAddModal : false,
       showEditModal : false,
+      showDeleteModal : false,
       outings : [], 
       newOuting: { 
         title:"", 
@@ -113,14 +128,23 @@ export default {
           this.getAllOutings();
         })
     },
-      updateOuting() {
-        let data = this.currentOuting;
-        let outingData = this.getData(data);
-        // requête post avec axios pour modifier une sortie
-        axios.post("http://localhost/Innlog/Innlog/projet-innlog/src/backend/api.php?action=update", outingData)
-          .then(()=> {
-            this.getAllOutings();
-        })
+    updateOuting() {
+      let data = this.currentOuting;
+      let outingData = this.getData(data);
+      // requête post avec axios pour modifier une sortie
+      axios.post("http://localhost/Innlog/Innlog/projet-innlog/src/backend/api.php?action=update", outingData)
+        .then(()=> {
+          this.getAllOutings();
+      })
+    },
+    deleteOuting() {
+      let data = this.currentOuting;
+      let outingData = this.getData(data);
+      // requête post avec axios pour modifier une sortie
+      axios.post("http://localhost/Innlog/Innlog/projet-innlog/src/backend/api.php?action=delete", outingData)
+        .then(()=> {
+          this.getAllOutings();
+      })
     },
     getData(data) {
       // récupération des données
@@ -131,7 +155,7 @@ export default {
       let distance = data.distance;
       let comment = data.comment;
 
-      //création de données pour les envoyer au back
+       //création de données pour les envoyer au back
       let outingData = new FormData();
       outingData.append('id', id);
       outingData.append('title', title);
