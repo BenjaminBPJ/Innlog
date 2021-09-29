@@ -2,6 +2,8 @@
 <div>
   <div>
     <h1>Bienvenu sur l'application qui répertorie les meilleures balades de la région</h1>
+
+    <!-- Carte pour une sortie -->
     <div v-for="outing in outings" :key="outing">
       <h3>Nom de la sortie : {{ outing.title }}</h3>
       <h2>Type de sortie : {{ outing.type }}</h2>
@@ -9,8 +11,8 @@
       <p>Distance : {{ outing.distance }} km</p>
       <p>durée</p>
       <p>Commentaire : {{ outing.comment }}</p>
-      <button @click="showEditModal=true">Modifier la sortie</button>
-      <button>Supprimer la sortie</button>
+      <button @click="showEditModal=true; selectOuting(outing);">Modifier la sortie</button>
+      <button @click="selectOuting(outing);">Supprimer la sortie</button>
     </div>
     <button @click="showAddModal=true">Ajouter une nouvelle sortie</button>
   </div>
@@ -20,7 +22,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5>sortie</h5>
+          <h5>Ajout d'une sortie</h5>
           <button @click="showAddModal=false">X</button>
         </div>
         <div class="modal-body">
@@ -47,22 +49,22 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5>sortie</h5>
+          <h5>Modification d'une sortie</h5>
           <button @click="showEditModal=false">X</button>
         </div>
         <div class="modal-body">
           <form action="#" method="post">
             <label for="outing-name">Nom de la sortie</label>
-            <input type="text" name="outing-name">
+            <input type="text" name="outing-name" v-model="currentOuting.title">
             <label for="outing-type">Type de la sortie</label>
-            <input type="text" name="outing-type">
+            <input type="text" name="outing-type" v-model="currentOuting.type">
             <label for="outing-speed">Vitesse moyenne</label>
-            <input type="text" name="outing-speed">
+            <input type="number" name="outing-speed" v-model="currentOuting.speedAverage">
             <label for="outing-distance">Distance</label>
-            <input type="text" name="outing-distance">
+            <input type="number" name="outing-distance" v-model="currentOuting.distance">
             <label for="outing-comment">Commentaire</label>
-            <input type="text" name="outing-comment">
-            <button type="" @click="showEditModal=false">Modifier</button>
+            <input type="text" name="outing-comment" v-model="currentOuting.comment">
+            <button type="" @click="showEditModal=false; updateOuting();">Modifier</button>
           </form>
         </div>
       </div>
@@ -80,14 +82,15 @@ export default {
     return {
       showAddModal : false,
       showEditModal : false,
-      outings : [],
+      outings : [], 
       newOuting: { 
         title:"", 
         type:"", 
         speedAverage:"", 
         distance:"", 
         comment:""
-        }
+        },
+      currentOuting : {},
     }
   },
   mounted() {
@@ -102,28 +105,45 @@ export default {
         })
     },
     createOuting() {
+      let data = this.newOuting;
+      let outingData = this.getData(data);
+      // requête post avec axios pour créer une sortie
+      axios.post("http://localhost/Innlog/Innlog/projet-innlog/src/backend/api.php?action=create", outingData)
+        .then(()=> {
+          this.getAllOutings();
+        })
+    },
+      updateOuting() {
+        let data = this.currentOuting;
+        let outingData = this.getData(data);
+        // requête post avec axios pour modifier une sortie
+        axios.post("http://localhost/Innlog/Innlog/projet-innlog/src/backend/api.php?action=update", outingData)
+          .then(()=> {
+            this.getAllOutings();
+        })
+    },
+    getData(data) {
       // récupération des données
-      let title = this.newOuting.title;
-      let type = this.newOuting.type; 
-      let speedAverage = this.newOuting.speedAverage; 
-      let distance = this.newOuting.distance;
-      let comment = this.newOuting.comment;
+      let id = data.id
+      let title = data.title;
+      let type = data.type; 
+      let speedAverage = data.speedAverage; 
+      let distance = data.distance;
+      let comment = data.comment;
 
       //création de données pour les envoyer au back
       let outingData = new FormData();
+      outingData.append('id', id);
       outingData.append('title', title);
       outingData.append('type', type);
       outingData.append('speedAverage', speedAverage);
       outingData.append('distance', distance);
       outingData.append('comment', comment);
 
-      // requête post avec axios pour créer une sortie
-      axios.post("http://localhost/Innlog/Innlog/projet-innlog/src/backend/api.php?action=create", outingData)
-        .then((res)=> {
-          console.log(res)
-          console.log(outingData)
-          this.getAllOutings();
-        })
+      return outingData
+    },
+    selectOuting(outing) {
+      this.currentOuting = outing;
     }
   }
 };
