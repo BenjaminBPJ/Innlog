@@ -28,3 +28,36 @@ function invalidEmail($email) {
     }
     return $result;
 }
+
+function emailAlreadyUse($bdd, $pseudo, $email) {
+    $sql = "SELECT * FROM utilisateurs WHERE pseudo= ? OR email = ?";
+    $query = $bdd->prepare($sql);
+    $query->bindValue(":pseudo", $pseudo, PDO::PARAM_STR);
+    $query->bindValue(":email", $email, PDO::PARAM_STR);
+    $query->execute(array($pseudo, $email));
+    $row = $query->rowCount();
+
+    if($row > 0){
+        $result = true;
+    }else{
+        $result=false;
+    }
+    return $result;
+}
+
+function signup($bdd, $pseudo, $email, $password) {
+    // hash du mdp
+    $hashPassword = password_hash($password, PASSWORD_DEFAULT);
+
+    $sql = "INSERT INTO utilisateurs (pseudo, email, password) VALUES (:pseudo, :email, '$hashPassword')";
+    $query = $bdd->prepare($sql);
+    $query->bindValue(":pseudo", $pseudo, PDO::PARAM_STR);
+    $query->bindValue(":email", $email, PDO::PARAM_STR);
+    $query->execute();
+    if($sql){
+        $result = true;
+    } else {
+        $result = false;
+    }
+    return $result;
+}

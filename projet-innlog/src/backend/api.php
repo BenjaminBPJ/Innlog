@@ -90,22 +90,18 @@
             exit("L'email n'est pas valide.");
         }
 
-        // hash du mdp
-        $hashPassword = password_hash($password, PASSWORD_DEFAULT);
+        if(emailAlreadyUse($bdd, $pseudo, $email) === true){
+            exit("L'email ou le pseudo existe deja");
+        }
 
-        $sql = "INSERT INTO utilisateurs (pseudo, email, password) VALUES (:pseudo, :email, '$hashPassword')";
-        $query = $bdd->prepare($sql);
-        $query->bindValue(":pseudo", $pseudo, PDO::PARAM_STR);
-        $query->bindValue(":email", $email, PDO::PARAM_STR);
-        $query->execute();
-
-        if($sql){
+        if(signup($bdd, $pseudo, $email, $password) === true){
             $result['message'] = 'Utilisateur crée.';
         } else {
             $result['error'] = true;
             $result['message'] = "Impossible de créer cet utilisateur.";
         }
     }
+        
     /*if ($action == 'login') {
         $pseudo=$_POST['pseudo'];
         $sql = $bdd->query("SELECT * FROM utilisateurs WHERE pseudo='$pseudo'");
@@ -115,6 +111,7 @@
         }
         $result['users']=$users;
     }*/
+    
     echo json_encode($result);
     require_once('./close.php');
 ?>
