@@ -5,10 +5,10 @@
         <p v-if="mode == 'signup'">Vous avez déjà de compte ? <span class="go-for-log" @click="switchToLogin();">Se connecter</span></p>
         <p v-else>Vous n'avez pas encore de compte ? <span class="go-for-log" @click="switchToSignup();">Créer un compte</span></p>
         <form action="#">
-            <label for="pseudo">Pseudo : </label>
-            <input type="text" name="pseudo" id="pseudo" v-model="user.pseudo">
-            <label v-if="mode == 'signup'" for="email">Email : </label>
-            <input v-if="mode == 'signup'" type="text" name="email" id="email" v-model="user.email">
+            <label v-if="mode == 'signup'" for="pseudo">Pseudo : </label>
+            <input v-if="mode == 'signup'" type="text" name="pseudo" id="pseudo" v-model="user.pseudo">
+            <label for="email">Email : </label>
+            <input type="mail" name="email" id="email" v-model="user.email">
             <label for="password">Password : </label>
             <input type="password" name="password" id="password" v-model="user.password">
             <input v-if="mode == 'signup'" type="submit" value="S'inscrire" @click.prevent="createAccount();">

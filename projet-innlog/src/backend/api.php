@@ -100,17 +100,34 @@
             $result['error'] = true;
             $result['message'] = "Impossible de créer cet utilisateur.";
         }
+
+        // Connection de l'utilisateur
+        $user = selectUser($bdd, $email);
+        openSessionUser($user);
     }
         
-    /*if ($action == 'login') {
-        $pseudo=$_POST['pseudo'];
-        $sql = $bdd->query("SELECT * FROM utilisateurs WHERE pseudo='$pseudo'");
-        $users = array();
-        while($row = $sql->fetch()){
-            array_push($users, $row);
+    if ($action == 'login') {
+        $email=$_POST['email'];
+        $password=$_POST['password'];
+
+        if(noEmptyInputLogin($email, $password) === false){
+            exit('Veuillez remplir tous les champs.');
         }
-        $result['users']=$users;
-    }*/
+        
+        // Vérification que l'adresse mail est une adresse mail valide 
+        if(invalidEmail($email) !== false){
+            exit("L'email n'est pas valide.");
+        }
+
+        // Je créer une variable user pour récupérer son mdp et voir si il est bon
+        $user = selectUser($bdd, $email);
+        if(!password_verify($password, $user['password'])){
+            exit("le mot de passe n'est pas le bon");
+        }
+        
+        // On connecte l'utilisateur a une session
+        openSessionUser($user);
+    }
     
     echo json_encode($result);
     require_once('./close.php');
