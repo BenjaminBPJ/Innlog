@@ -1,22 +1,8 @@
 <template>
   <div id="app">
-    <SignupPage />
-    <HomePage/>
+    <router-view/>
   </div>
 </template>
-
-<script>
-import SignupPage from './components/SignupPage.vue'
-import HomePage from './components/HomePage.vue'
-
-export default {
-  name: 'App',
-  components: {
-    SignupPage,
-    HomePage
-  }
-}
-</script>
 
 <style>
 #app {
@@ -25,6 +11,17 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
+button{
+    font-size: 1em;
+    background:rgb(30, 129, 79);
+    color: white;
+    cursor: pointer;
+    border-radius: 3px;
+    border: none;
+    margin: 0.5em;
+    padding: 0.3em;
+    width: 10em;
+}
+
 </style>

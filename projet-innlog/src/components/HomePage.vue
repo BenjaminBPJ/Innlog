@@ -1,10 +1,9 @@
 <template>
 <div>
-  <div>
-    <h1>Bienvenu sur l'application qui répertorie les meilleures balades de la région</h1>
-
+  <h1>Bienvenue sur l'application qui répertorie les meilleures balades de la région</h1>
+  <div class="outing-container">
     <!-- Carte pour une sortie -->
-    <div v-for="outing in outings" :key="outing">
+    <div v-for="outing in outings" :key="outing" class="outing">
       <h3>Nom de la sortie : {{ outing.title }}</h3>
       <h2>Type de sortie : {{ outing.type }}</h2>
       <p>Vitesse moyenne : {{ outing.speedAverage }} km/h</p>
@@ -14,8 +13,8 @@
       <button @click="showEditModal=true; selectOuting(outing);">Modifier la sortie</button>
       <button @click="showDeleteModal=true;selectOuting(outing);">Supprimer la sortie</button>
     </div>
-    <button @click="showAddModal=true">Ajouter une nouvelle sortie</button>
   </div>
+  <button @click="showAddModal=true">Ajouter une nouvelle sortie</button>
 
   <!-- modale création sortie -->
   <div id="overlay" v-if="showAddModal">
@@ -23,7 +22,6 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5>Ajout d'une sortie</h5>
-          <button @click="showAddModal=false">X</button>
         </div>
         <div class="modal-body">
           <form action="#" method="post">
@@ -32,13 +30,14 @@
             <label for="outing-type">Type de la sortie</label>
             <input type="text" name="outing-type" v-model="newOuting.type">
             <label for="outing-speed">Vitesse moyenne</label>
-            <input type="number" name="outing-speed" v-model="newOuting.speedAverage">
+            <input type="number" name="outing-speed" class="input-number" v-model="newOuting.speedAverage">
             <label for="outing-distance">Distance</label>
-            <input type="number" name="outing-distance" v-model="newOuting.distance">
+            <input type="number" name="outing-distance" class="input-number" v-model="newOuting.distance">
             <label for="outing-comment">Commentaire</label>
             <input type="text" name="outing-comment" v-model="newOuting.comment">
-            <button type="" @click.prevent="showAddModal=false; createOuting();">Ajouter</button>
           </form>
+          <button @click.prevent="showAddModal=false; createOuting();">Ajouter</button>
+          <button @click="showAddModal=false">Annuler</button>
         </div>
       </div>
     </div>
@@ -50,7 +49,6 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5>Modification d'une sortie</h5>
-          <button @click="showEditModal=false">X</button>
         </div>
         <div class="modal-body">
           <form action="#" method="post">
@@ -59,13 +57,14 @@
             <label for="outing-type">Type de la sortie</label>
             <input type="text" name="outing-type" v-model="currentOuting.type">
             <label for="outing-speed">Vitesse moyenne</label>
-            <input type="number" name="outing-speed" v-model="currentOuting.speedAverage">
+            <input type="number" name="outing-speed" class="input-number" v-model="currentOuting.speedAverage">
             <label for="outing-distance">Distance</label>
-            <input type="number" name="outing-distance" v-model="currentOuting.distance">
+            <input type="number" name="outing-distance" class="input-number" v-model="currentOuting.distance">
             <label for="outing-comment">Commentaire</label>
             <input type="text" name="outing-comment" v-model="currentOuting.comment">
-            <button type="" @click="showEditModal=false; updateOuting();">Modifier</button>
           </form>
+          <button @click="showEditModal=false; updateOuting();">Modifier</button>
+          <button @click="showEditModal=false">Annuler</button>
         </div>
       </div>
     </div>
@@ -175,6 +174,13 @@ export default {
 
 
 <style scoped>
+h1{
+  margin-bottom: 2em;
+}
+.outing{
+  border: solid black 1px;
+  margin: 0.2em;
+}
 #overlay{
   position: fixed;
   top: 0;
@@ -183,4 +189,24 @@ export default {
   right: 0;
   background: rgba(0, 0, 0, 0.6);
 }
+.modal-content{
+  margin-top: 15%;
+  margin-right: 15%;
+  margin-left: 15%;
+  background-color: white;
+}
+form{
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+input{
+  width: 40%;
+  margin: auto;
+  text-align: center;
+}
+.input-number{
+  width: 4em;
+}
+
 </style>

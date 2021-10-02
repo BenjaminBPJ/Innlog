@@ -31,10 +31,10 @@
 
         $sql=$bdd->query("INSERT into sorties (title, type, date, speedAverage, distance, comment ) VALUES ('$title', '$type', NOW(), '$speedAverage', '$distance', '$comment')");
         if($sql){
-            $result['message'] = 'La sortie a été crée.';
+            $result['message'] = 'La sortie a été crée';
         } else {
             $result['error'] = true;
-            $result['message'] = "Impossible d'ajouter une nouvelle sortie.";
+            $result['message'] = "Impossible d'ajouter une nouvelle sortie";
         }
     }
 
@@ -49,10 +49,10 @@
 
         $sql=$bdd->query("UPDATE sorties SET title='$title', type='$type', date=NOW(), distance='$distance', speedAverage='$speedAverage', comment='$comment' WHERE id='$id'");
         if($sql){
-            $result['message'] = 'La sortie a été modifiée.';
+            $result['message'] = 'La sortie a été modifiée';
         } else {
             $result['error'] = true;
-            $result['message'] = "Impossible de modifier une nouvelle sortie.";
+            $result['message'] = "Impossible de modifier une nouvelle sortie";
         }
     }
 
@@ -62,32 +62,32 @@
 
         $sql=$bdd->query("DELETE FROM sorties WHERE id='$id'");
         if($sql){
-            $result['message'] = 'La sortie a été supprimée.';
+            $result['message'] = 'La sortie a été supprimée';
         } else {
             $result['error'] = true;
-            $result['message'] = "Impossible de supprimer cette sortie.";
+            $result['message'] = "Impossible de supprimer cette sortie";
         }
     }
 
     // Création d'un compte
     if ($action == 'signup') {
         $pseudo=strip_tags($_POST['pseudo']);
-        $email=$_POST['email'];
-        $password=$_POST['password'];
+        $email=strip_tags($_POST['email']);
+        $password=strip_tags($_POST['password']);
 
         // vérification que tous le sinputs sont présents et remplis
         if(noEmptyInputSignup($pseudo, $email, $password) === false){
-            exit('Veuillez remplir tous les champs.');
+            exit('Veuillez remplir tous les champs');
         }
 
         // vérification que le pseudo est correct
         if(invalidPseudo($pseudo) !== false){
-            exit( "Le pseudo n'est pas valide.");
+            exit( "Veuillez écrire un pseudo en toute lettre");
         }
 
         // vérification que l'adresse mail est une adresse mail valide 
         if(invalidEmail($email) !== false){
-            exit("L'email n'est pas valide.");
+            exit("L'email n'est pas valide");
         }
 
         if(emailAlreadyUse($bdd, $pseudo, $email) === true){
@@ -95,10 +95,10 @@
         }
 
         if(signup($bdd, $pseudo, $email, $password) === true){
-            $result['message'] = 'Utilisateur crée.';
+            $result['message'] = 'Utilisateur crée';
         } else {
             $result['error'] = true;
-            $result['message'] = "Impossible de créer cet utilisateur.";
+            $result['message'] = "Impossible de créer cet utilisateur";
         }
 
         // Connection de l'utilisateur
@@ -107,26 +107,27 @@
     }
         
     if ($action == 'login') {
-        $email=$_POST['email'];
-        $password=$_POST['password'];
+        $email=strip_tags($_POST['email']);
+        $password=strip_tags($_POST['password']);
 
         if(noEmptyInputLogin($email, $password) === false){
-            exit('Veuillez remplir tous les champs.');
+            exit('Veuillez remplir tous les champs');
         }
         
         // Vérification que l'adresse mail est une adresse mail valide 
         if(invalidEmail($email) !== false){
-            exit("L'email n'est pas valide.");
+            exit("Mot de passe ou adresse email invalide");
         }
 
         // Je créer une variable user pour récupérer son mdp et voir si il est bon
         $user = selectUser($bdd, $email);
         if(!password_verify($password, $user['password'])){
-            exit("le mot de passe n'est pas le bon");
+            exit("Mot de passe ou adresse email invalide");
         }
         
         // On connecte l'utilisateur a une session
         openSessionUser($user);
+        $result['message'] = "Vous êtes connecté";
     }
     
     echo json_encode($result);

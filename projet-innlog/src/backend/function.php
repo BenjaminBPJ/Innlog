@@ -94,4 +94,6 @@ function openSessionUser($user){
         "id" => $user["id"],
         "email" => $user["email"],
     ];
+
+    return $_SESSION["user"];
 }
